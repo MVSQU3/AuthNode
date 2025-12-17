@@ -1,0 +1,195 @@
+/* Fichier : src/components/RegisterStyles.css */
+
+/* From Uiverse.io by andrew-demchenk0 */
+/* Style 3D pour le formulaire d'inscription */
+
+.input,
+.button {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  padding: 10px;
+  border: 0.1px solid #575cb5;
+  background: transparent;
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button {
+  background: #6d74e3;
+  border: none;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.wrapper {
+  position: relative;
+  /* La structure <ul> autour des champs */
+  transform: skewY(-14deg);
+  /* Ajout d'une marge pour séparer les éléments */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; 
+}
+
+.wrapper li,
+.button {
+  position: relative;
+  list-style: none;
+  width: 200px;
+  /* Utilise --i défini dans le JSX pour l'ordre des couches */
+  z-index: var(--i); 
+  transition: 0.3s;
+  color: white;
+}
+
+/* Pseudo-éléments pour la face gauche du 3D */
+.wrapper li::before,
+.button::before {
+  position: absolute;
+  content: "";
+  background: #6d74e3;
+  top: 0;
+  left: -40px;
+  width: 40px;
+  height: 40px;
+  transform-origin: right;
+  transform: skewY(45deg);
+  transition: 0.3s;
+}
+
+/* Pseudo-éléments pour la face supérieure du 3D */
+.wrapper li::after,
+.button::after {
+  position: absolute;
+  content: "";
+  background: #6d74e3;
+  width: 200px;
+  height: 40px;
+  top: -40px;
+  left: 0;
+  transform-origin: bottom;
+  transform: skewX(45deg);
+  transition: 0.3s;
+}
+
+/* Couleurs dégradées pour chaque champ (du haut vers le bas) */
+/* Le z-index --i est défini en JSX (3, 2, 1) */
+
+/* Champ 1 (Fullname) */
+.wrapper li:nth-child(1)::after,
+.wrapper li:nth-child(1)::before {
+  background-color: #d8daf7;
+}
+
+/* Champ 2 (Email) */
+.wrapper li:nth-child(2)::after,
+.wrapper li:nth-child(2)::before {
+  background-color: #c2c5f3;
+}
+
+/* Champ 3 (Password) */
+.wrapper li:nth-child(3)::after,
+.wrapper li:nth-child(3)::before {
+  background-color: #989deb;
+}
+
+/* La 4ème couleur était destinée au bouton, mais nous utilisons la classe .button */
+
+.input {
+  outline: none;
+  border: none;
+  color: black;
+  background: transparent !important;
+  z-index: 10;
+}
+
+.input::placeholder {
+  color: black;
+  opacity: 0.8;
+}
+
+/* Arrière-plans des inputs (couleur de la face principale) */
+.wrapper li:nth-child(1) .input {
+  background: #d8daf7 !important;
+}
+
+.wrapper li:nth-child(2) .input {
+  background: #c2c5f3 !important;
+}
+
+.wrapper li:nth-child(3) .input {
+  background: #989deb !important;
+}
+
+/* Effets focus avec bordure */
+.wrapper li:nth-child(1) .input:focus {
+  outline: none;
+  border: 3.5px solid #d8daf7 !important;
+}
+
+.wrapper li:nth-child(2) .input:focus {
+  outline: none;
+  border: 3.5px solid #c2c5f3 !important;
+}
+
+.wrapper li:nth-child(3) .input:focus {
+  outline: none;
+  border: 3.5px solid #989deb !important;
+}
+
+
+/* Effets hover (décalage vers la gauche) */
+.wrapper li:hover,
+.button:hover {
+  transform: translateX(-20px) skewY(-14deg); /* Ajout du skewY pour maintenir la perspective */
+}
+
+/* Effets hover du bouton (changement de couleur) */
+.button:hover,
+.button:hover::before,
+.button:hover::after {
+  background: #575cb5;
+}
+
+.button:active {
+  /* Retour à la position initiale lors du clic */
+  transform: translateX(0px) skewY(-14deg); 
+}
+
+/* États du bouton désactivé */
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button:disabled:hover {
+  transform: none;
+  background: #6d74e3;
+}
+
+.button:disabled:hover::before,
+.button:disabled:hover::after {
+  background: #6d74e3;
+}
+
+/* Le fichier CSS que vous avez fourni, non modifié */
+
+.input,
+.button {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  padding: 10px;
+  border: 0.1px solid #575cb5;
+  background: transparent;
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ... le reste du CSS 3D se trouve dans ma réponse précédente ... */ 
+/* (Il est trop long pour être répété ici, mais il est inchangé) */
