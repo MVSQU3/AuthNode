@@ -14,13 +14,24 @@ interface UserData {
   password: string;
 }
 
+interface AuthResponse {
+  success: boolean;
+  message?: string;
+  errors?: [];
+}
 interface AuthState {
   user: User | null;
   isLoading: boolean;
   setUser: (user: User | null) => void;
-  register: (data: UserData, navigate: (path: string) => void) => Promise<void>;
+  register: (
+    data: UserData,
+    navigate: (path: string) => void
+  ) => Promise<AuthResponse>;
   logout: (navigate: (path: string) => void) => Promise<void>;
-  login: (data: UserData, navigate: (path: string) => void) => Promise<void>;
+  login: (
+    data: UserData,
+    navigate: (path: string) => void
+  ) => Promise<AuthResponse>;
   initializeAuth: () => Promise<void>;
 }
 
@@ -31,12 +42,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setUser: (user: User | null) => {
     set({ user: user });
   },
-  register: async (data: UserData, navigate) => {
+  register: async (data: UserData, navigate): Promise<AuthResponse> => {
     try {
       await api.post("/auth/register", data);
+      // On ne met pas le toast ici si on veut le déclencher dans le composant
       navigate("/login");
-    } catch (error) {
-      console.log("Erreur lors de la connexion", error);
+      return { success: true };
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Erreur lors de l'inscription";
+      console.log(message, error);
+      return { success: false, message };
     }
   },
 
@@ -52,14 +68,23 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  login: async (data: UserData, navigate) => {
+  login: async (data: UserData, navigate): Promise<AuthResponse> => {
+    set({ isLoading: true });
     try {
-      await api.post("/auth/login", data);
+      const res = await api.post("/auth/login", data);
       await get().initializeAuth();
       navigate("/");
-    } catch (error) {
+      return { success: true, message: res.data.message };
+    } catch (error: any) {
       console.log("Erreur lors de la connexion", error);
+      const responseData = error.response?.data;
+      return {
+        success: false,
+        message: responseData?.message || "Erreur de connexion",
+        errors: responseData?.errors || [],
+      };
     } finally {
+      set({ isLoading: false });
     }
   },
 

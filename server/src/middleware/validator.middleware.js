@@ -7,7 +7,6 @@ export const validatorMiddleware = async (req, res, next) => {
   errors.array().map((error) => {
     errorMsg.push(error.msg);
   });
-  errorMsg.shift();
 
   if (!errors.isEmpty()) {
     return res.status(400).json({

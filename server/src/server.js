@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -7,13 +7,13 @@ import user_routes from "./routes/user.routes.js";
 import database from "./database/db.js";
 
 const app = express();
+// dotenv.config({ debug: true });
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
 );
-dotenv.config({ debug: true });
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());

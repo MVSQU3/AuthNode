@@ -9,6 +9,10 @@ import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import NavBar from "./components/NavBar";
 import PublcRoute from "./components/PublicRoute";
+import Profil from "./pages/Profil";
+import Settings from "./pages/Settings";
+import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
@@ -18,7 +22,11 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <Loader2 />;
+    return (
+      <div className="flex items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
   }
   return (
     <div>
@@ -41,6 +49,22 @@ function App() {
             </PublcRoute>
           }
         />
+        <Route
+          path="/reset-password"
+          element={
+            <PublcRoute>
+              <ResetPassword />
+            </PublcRoute>
+          }
+        />
+        <Route
+          path="/reset-password-confirm/:token"
+          element={
+            <PublcRoute>
+              <ResetPasswordConfirm />
+            </PublcRoute>
+          }
+        />
 
         {/* Route Protégée : Utilisation du PrivateRoute comme enveloppe */}
         <Route
@@ -56,6 +80,15 @@ function App() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/settings" element={<Settings />} />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profil />
             </PrivateRoute>
           }
         />

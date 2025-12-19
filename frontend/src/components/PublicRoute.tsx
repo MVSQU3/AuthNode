@@ -11,7 +11,11 @@ const PublcRoute: React.FC<PublcRouteProps> = ({ children }) => {
   const isLoading = useAuthStore((state) => state.isLoading);
 
   if (isLoading) {
-    return <Loader2 />;
+      return (
+    <div className="flex items-center justify-center">
+      <Loader2 className="h-6 w-6 animate-spin text-primary" />
+    </div>
+  );
   }
 
   if (!isLoading && user) {

@@ -15,9 +15,8 @@ export const register = async (req, res) => {
 
     const hashed = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ ...req.body, password: hashed });
+    const user = await User.create({ fullname, email, password: hashed });
     user.password = null;
-    generateAccessToken(res, user._id, fullname);
     res.status(201).json({ user });
   } catch (error) {
     res
@@ -34,21 +33,22 @@ export const login = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ message: "Email ou mot de passe incorrect" });
+        .json({ success: false, message: "Email ou mot de passe incorrect" });
     }
 
     const valid = await comparePwd(password, user.password);
-    if (!valid)
+    if (!valid) {
       return res
         .status(400)
-        .json({ message: "Email ou mot de passe incorrect" }); // 1. Génération et placement des jetons dans les cookies
+        .json({ success: false, message: "Email ou mot de passe incorrect" });
+    }
 
     generateAccessToken(res, user._id, user.fullname);
-    const refresh_token = generateRefreshToken(res, user._id); // 2. Stockage du Refresh Token en base de données
+    const refresh_token = generateRefreshToken(res, user._id);
     user.refreshToken = refresh_token;
     await user.save();
 
-    res.status(200).json({ message: "Connecté!" });
+    return res.status(200).json({ success: true, message: "Connecté!" });
   } catch (error) {
     res
       .status(500)

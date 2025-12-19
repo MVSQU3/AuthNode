@@ -2,6 +2,8 @@ import express from "express";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import {
   changePassword,
+  forgotPassword,
+  resetPasswordConfirm,
   userDelProfile,
   userProfile,
 } from "../controllers/user.controller.js";
@@ -18,4 +20,6 @@ router.put(
   validatorMiddleware,
   changePassword
 );
+router.post("/reset-password", forgotPassword);
+router.post("/reset-password-confirm/:token", resetPasswordConfirm);
 export default router;

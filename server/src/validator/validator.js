@@ -1,13 +1,13 @@
 import { body } from "express-validator";
-import User from "../models/User.js";
+
 export const RegisterV = function () {
   return [
     body("fullname")
       .trim()
       .notEmpty()
       .isString()
-      .isLength({ min: 3, max: 24 })
-      .withMessage("Veuillez entre un nom valide 3 caractère minimum."),
+      .isLength({ min: 2, max: 24 })
+      .withMessage("Veuillez entre un nom valide 2 caractère minimum."),
 
     body("email")
       .trim()

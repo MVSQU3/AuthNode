@@ -12,7 +12,11 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   console.log("log de user et isLoading", user, isLoading);
 
   if (isLoading) {
-    return <Loader2 />;
+    return (
+      <div className="flex items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
   } // Scénario 3 : Le chargement est terminé ET l'utilisateur n'est pas connecté
 
   if (!isLoading && !user) {

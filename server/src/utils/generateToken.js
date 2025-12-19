@@ -1,9 +1,17 @@
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+
+
 const isProduction = process.env.NODE_ENV === "production";
+
 export const generateAccessToken = function (res, userID, fullname) {
-  const access_token = jwt.sign({ userID, fullname }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  });
+  const access_token = jwt.sign(
+    { userID, fullname },
+    process.env.ACCESS_SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
 
   res.cookie("access_token", access_token, {
     maxAge: 60 * 60 * 1000,
@@ -31,4 +39,13 @@ export const generateRefreshToken = function (res, userID) {
   });
 
   return refreshToken;
+};
+
+export const generateResetToken = async (email) => {
+  const resetToken = jwt.sign({ email }, process.env.RESET_SECRET, {
+    expiresIn: "1h",
+  });
+
+  const hashResetToken = await bcrypt.hash(resetToken, 10);
+  return { hashResetToken, resetToken };
 };
